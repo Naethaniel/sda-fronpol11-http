@@ -1,0 +1,32 @@
+{
+    "games": [
+        {
+            "name": "World of Warcraft",
+            "type": "MMORPG",
+            "isBorrowed": false,
+            "prefferedAge": 18,
+            "borrowerId": null
+        },
+        {
+            "name": "Witcher 3",
+            "type": "RPG",
+            "isBorrowed": true,
+            "prefferedAge": 18,
+            "borrowerId": "000000000001"
+        },
+        {
+            "name": "Pacman",
+            "type": "Platformer",
+            "isBorrowed": false,
+            "prefferedAge": 6,
+            "borrowerId": null
+        },
+        {
+            "name": "Tetris",
+            "type": "Platformer",
+            "isBorrowed": true,
+            "prefferedAge": 6,
+            "borrowerId": "000000000002"
+        }
+    ]
+}

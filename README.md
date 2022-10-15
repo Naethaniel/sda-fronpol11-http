@@ -12,10 +12,12 @@ Proszę o przygotowanie następujących funkcjonalności:
       * Usunięcie posta
 2. Lista komentarzy (/comments):
     * Implementacja obsługi zapytań:
+      * Pobieranie listy wszystkich komentarzy
       * Pobranie listy komentarzy dla konkretnego postu
       * Moliwosc dodania komentarza do konkretnego postu
       * Mozliwosc usuniecia konkretnego komentarza dla konkretnego postu
-
+      * Edycja komentarza
+      * Usuniecie komentarza
 
 Wszystko powinno byc zaimplementowane w odpowiedniej klasie i przy uzyciu funkcji `fetch`.
 
