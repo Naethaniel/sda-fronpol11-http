@@ -14,8 +14,7 @@ Proszę o przygotowanie następujących funkcjonalności:
     * Implementacja obsługi zapytań:
       * Pobieranie listy wszystkich komentarzy
       * Pobranie listy komentarzy dla konkretnego postu
-      * Moliwosc dodania komentarza do konkretnego postu
-      * Mozliwosc usuniecia konkretnego komentarza dla konkretnego postu
+      * Mozliwosc dodania komentarza do konkretnego postu
       * Edycja komentarza
       * Usuniecie komentarza
 

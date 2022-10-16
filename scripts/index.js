@@ -34,6 +34,61 @@ class Posts {
         // W momencie obsluzenia zapytania przez przegladarke, zwracam kolejna Promise ktora obiecuje, ze przygotuje mi odpowiedz uzyskana z serwera w postaci JSON.
         return fetchPromise.then((response) => response.json());
     }
+
+    addPost(newPost) {
+        // Tworze nowy obiekt options z dwoma polami : metod oraz body.
+        // Funkcja fetch w dokumentacji pokazuje, ze mozemy przekazac cialo do zapytania pod kluczem body ale musi byc ono w formie np. tekstowej.
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(newPost)
+        }
+
+        // Wywolanie funkcji fetch dla danego URL oraz options, zwraca mi to Promise ktory obiecuje ze zwroci obiekt typu Response
+        const fetchPromise = fetch(this.url, options);
+
+        // W momencie kiedy to zapytanie sie wykona metoda .then wywola przekazana funkcje jako swoj parametr
+        return fetchPromise.then((response) => {
+            // Sprawdzenie czy status odpowiedzi miesci sie w grupie 2 statusów HTTP (200-299)
+            if (response.ok) {
+                // Jezeli jest ok to zwracamy odpowiedz w postaci JSON
+                return response.json();
+            } else {
+                // W przeciwnym przypadku zwracamy nowy obiekt, ktory opisuje ze wystapil jakis blad podczas zapytania
+                return {
+                    error: 'Wystapil jakis blad podczas zapytania',
+                    status: response.status,
+                    statusText: response.statusText
+                }
+            }
+        });
+    }
+
+    editPost(editedPost) {
+        // Przygotowanie opcji - ustawienie odpowiedniej metody oraz ciala zapytania
+        const options = {
+            method: 'PUT',
+            body: JSON.stringify(editedPost)
+        };
+
+        // zgodnie z dokumentacja wykonujemy zapytanie na odpowiedni adres URL
+        const url = `${this.url}/${editedPost.id}`
+
+        // wywolanie funkcji fetch pod konretnym adresem oraz z opcjami
+        const fetchPromise = fetch(url, options);
+
+        // obsluga Promesy zwroconej przez fetch
+        return fetchPromise.then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return {
+                    error: 'Wystapil blad podczas edycji posta',
+                    status: response.status,
+                    statusText: response.statusText
+                }
+            }
+        })
+    }
 }
 
 class Comments {
@@ -62,6 +117,54 @@ class Comments {
         // wywolanie funkcji fetch na konkretnym adresie z opcjami, i zwrocenie Promesy ktora obiecuje przeksztalcic wynik uzyskany z serwera do postaci JSON.
         return fetch(url, options).then((response) => response.json());
     }
+
+    addComment(newComment) {
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(newComment)
+        }
+
+        const fetchPromise = fetch(this.url, options);
+
+        return fetchPromise.then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return {
+                    error: 'Wystapil blad poczas dodawania nowego komentarza',
+                    status: response.status,
+                    statusText: response.statusText
+                }
+            }
+        });
+    }
+
+    editComment(editedComment) {
+        const options = {
+            method: 'PUT',
+            body: JSON.stringify(editedComment)
+        }
+
+        const url = `${this.url}/${editedComment.id}`;
+
+        const fetchPromise = fetch(url, options);
+
+        return fetchPromise.then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return {
+                    error: `Wystapil blad podczas edycji komentarza: ${editedComment.id}`,
+                    status: response.status,
+                    statusText: response.statusText
+                }
+            }
+        })
+    }
+
+    getCommentsForPost() {
+        
+    }
 }
 
 // Wywolanie konstruktora klasy Posts i stworzenie nowego obiektu
@@ -72,6 +175,29 @@ posts.getAllPosts().then((json) => {
 });
 // Wywolanie metody deletePost z parametrem 5 oznacza, ze chce usunac post, ktorego ID = 5.
 posts.deletePost(5).then(console.log);
+// Wywolanie metody ktora stworzy nowy zasob Post bazujac na podanych parametrach
+let newPost = { userId: 5, title: 'Moj nowy post', body: 'Moje nowe cialo w nowym poscie' };
+posts.addPost(newPost).then((json) => {
+    newPost = {
+        ...newPost,
+        ...json
+    };
+    console.log('Utworzono nowy post:', newPost);
+
+    // Z powodu, ze API tak na prawde nie dodaje do bazy danych nowego postu ta metoda zakonczy sie z błedem
+    posts.editPost({
+        ...newPost,
+        title: 'Moj zedytowany tytul'
+    }).then(console.log);
+});
+
+// Edycja juz istniejacego postu w bazie danych
+posts.editPost({
+    id: 2,
+    userId: 2,
+    title: 'Edited title',
+    body: 'Edited body'
+}).then(console.log);
 
 // Wywolanie konstruktora klasy Comments i stworzenie nowego obiektu
 const comments = new Comments();
@@ -81,3 +207,19 @@ comments.getAllComments().then((json) => {
 });
 // Wywolanie metody deleteComment z parametrem 2 oznacza, ze chce usunac komentarz ktorego ID = 2;
 comments.deleteComment(2).then(console.log);
+// Dodanie nowego komentarza
+comments.addComment({
+    postId: 5,
+    name: 'Bartek',
+    email: 'bartek@test.pl',
+    body: 'Ale super post, ciesze sie ze to sie udało!'
+}).then(console.log);
+
+// Edycja komentarza
+comments.editComment({
+    postId: 1,
+    id: 5,
+    name: "Super komentarz",
+    email: "bartosz@test.com",
+    body: "Uczymy sie HTTP"
+}).then(console.log);
