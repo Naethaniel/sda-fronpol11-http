@@ -27,11 +27,9 @@ Zadanie dodatkowe:
     * Usuniecie uzytkownika
     * Edycja uzytkownika
 2. Przygotowac obsługę błędów:
-   1. Lista postow:
-      * Podczas dodawania postu przygotowac kod aby obsluzyl status http 400 (Bad request). Niestety API nie pozwala zwrocic dowolnych statusow takze to zadanie jest "na sucho"
-   2. Lista uzytkownikow
-      * Podczas edycji uzytkownika przygotowac kod aby obsluzyl status 401 Unauthorized. Niestety API nie pozwala zwrocic dowolnych statusow takze to zadanie jest na "sucho"
-
+   1. Lista uzytkownikow:
+      * Podczas dodawania uzytkownika przygotowac kod aby obsluzyl status http 400 (Bad request). Niestety API nie pozwala zwrocic dowolnych statusow takze to zadanie jest "na sucho"
+      * Podczas edycji uzytkownika przygotowac kod aby obsluzyl status http 401 Unauthorized. Niestety API nie pozwala zwrocic dowolnych statusow takze to zadanie jest na "sucho"
 
 **UWAGA**
 "na sucho" oznacza tutaj brak mozliwosci uruchomienia kodu poniewaz on sie nigdy nie wykona (z powodu ze ten status nigdy nie zostanie zwrocony w przypadku API w tym zadaniu)
