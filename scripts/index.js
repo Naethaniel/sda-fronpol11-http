@@ -159,11 +159,32 @@ class Comments {
                     statusText: response.statusText
                 }
             }
-        })
+        });
     }
 
-    getCommentsForPost() {
-        
+    getCommentsForPost(postId) {
+        // Aby recznie nie tworzyc odpowiedniego adresu URL korzystamy z klasy URLSearchParams, ktora pozwala nam w prosty sposob pracowac z query paramsami dla jakiegos URL. W konstruktorze przekazujemy obiekt, ktory zostanie przeksztalcony przez logike zawarta w klasie URLSearchParams do postaci odpowiedniej aby byla uzyta w adresie URL
+        const queryParams = new URLSearchParams({
+            postId: postId
+        });
+        // Budowanie odpowiedniego adresu zasobu - uzycie metody toString() spowoduje przygotowanie odpowiednich query parameters
+        const url = `${this.url}?${queryParams.toString()}`;
+
+        // wykonanie zapytania - domyslnie wykonuje sie zapytanie GET
+        const fetchPromise = fetch(url);
+
+        // obsluga obiektu Response, ktory jest zwracany przez Promise z fetch.
+        return fetchPromise.then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return {
+                    error: `Wystapil blad podczas pobierania komentarzy dla postu o ID ${postId}`,
+                    status: response.status,
+                    statusText: response.statusText
+                }
+            }
+        })
     }
 }
 
@@ -223,3 +244,6 @@ comments.editComment({
     email: "bartosz@test.com",
     body: "Uczymy sie HTTP"
 }).then(console.log);
+
+// Pobranie komentarza dla konkretnego postu
+comments.getCommentsForPost(2).then(console.log);
